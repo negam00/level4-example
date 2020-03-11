@@ -10,4 +10,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="give_reminder">Give a reminder</string>
+    <string name="title_activity_add_reminder">AddReminderActivity</string>
+    <string name="add_your_reminder">Add your reminder</string>
+    <string name="reminder">Reminder</string>
 </resources>
