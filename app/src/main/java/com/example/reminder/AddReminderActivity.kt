@@ -19,7 +19,6 @@ class AddReminderActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_reminder)
         setSupportActionBar(toolbar)
 
-
         initViews()
     }
 
@@ -30,10 +29,11 @@ class AddReminderActivity : AppCompatActivity() {
      * Add reminder if reminder isn't empty
      */
     private fun onSaveClick() {
-        val reminder = etAddReminder.text.toString()
+        val reminderString = etAddReminder.text.toString()
         val resultIntent = Intent()
 
-        if (reminder.isNotBlank()) {
+        if (reminderString.isNotBlank()) {
+            val reminder = Reminder(reminderString)
             resultIntent.putExtra(EXTRA_REMINDER, reminder)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
