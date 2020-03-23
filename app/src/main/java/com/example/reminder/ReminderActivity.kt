@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.repositories.ReminderRepository
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_add_reminder.*
@@ -22,12 +23,14 @@ const val ADD_REMINDER_REQUEST_CODE = 100
 class ReminderActivity : AppCompatActivity() {
     private val reminders = arrayListOf<Reminder>()
     private val reminderAdapter = ReminderAdapter(reminders)
+    private lateinit var reminderRepository: ReminderRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
+        setTitle(R.string.app_name)
+        reminderRepository = ReminderRepository(this)
         initViews()
         fab.setOnClickListener { startAddActivity() }
     }
@@ -39,6 +42,14 @@ class ReminderActivity : AppCompatActivity() {
 
         rvReminders.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         createItemTouchHelper().attachToRecyclerView(rvReminders)
+        getRemindersFromDB()
+    }
+
+    private fun getRemindersFromDB() {
+        val reminders = reminderRepository.getAllReminders()
+        this@ReminderActivity.reminders.clear()
+        this@ReminderActivity.reminders.addAll(reminders)
+        reminderAdapter.notifyDataSetChanged()
     }
 
     private fun startAddActivity() {
@@ -52,8 +63,8 @@ class ReminderActivity : AppCompatActivity() {
                 ADD_REMINDER_REQUEST_CODE -> {
                     val reminder = data?.getParcelableExtra<Reminder>(EXTRA_REMINDER)
                     reminder?.let {
-                        reminders.add(reminder)
-                        reminderAdapter.notifyDataSetChanged()
+                        reminderRepository.insertReminder(reminder)
+                        getRemindersFromDB()
                     } ?: run {
                         Log.e("addReminder","Something went wrong while adding reminder")
                     }
@@ -83,8 +94,9 @@ class ReminderActivity : AppCompatActivity() {
             // Delete reminder once user swipes left
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                reminders.removeAt(position)
-                reminderAdapter.notifyDataSetChanged()
+                val reminderToDelete = reminders[position]
+                reminderRepository.deleteReminder(reminderToDelete)
+                getRemindersFromDB()
             }
 
         }
