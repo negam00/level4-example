@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.content_main.*
 
 const val ADD_REMINDER_REQUEST_CODE = 100
 
-class MainActivity : AppCompatActivity() {
+class ReminderActivity : AppCompatActivity() {
     private val reminders = arrayListOf<Reminder>()
     private val reminderAdapter = ReminderAdapter(reminders)
 
@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         // Initialize the recycler view with a linear layout manager, adapter
         rvReminders.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rvReminders.adapter = reminderAdapter
+
         rvReminders.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         createItemTouchHelper().attachToRecyclerView(rvReminders)
     }
@@ -102,7 +103,10 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.home -> {
+                finish()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

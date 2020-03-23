@@ -23,6 +23,9 @@ class AddReminderActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        // add the back button
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         fab.setOnClickListener { onSaveClick() }
     }
     /**

@@ -15,10 +15,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.reminder.MainActivity" />
+                android:value="com.example.reminder.ReminderActivity" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ReminderActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
