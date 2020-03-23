@@ -17,6 +17,10 @@ import com.example.repositories.ReminderRepository
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_add_reminder.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 const val ADD_REMINDER_REQUEST_CODE = 100
 
@@ -46,10 +50,14 @@ class ReminderActivity : AppCompatActivity() {
     }
 
     private fun getRemindersFromDB() {
-        val reminders = reminderRepository.getAllReminders()
-        this@ReminderActivity.reminders.clear()
-        this@ReminderActivity.reminders.addAll(reminders)
-        reminderAdapter.notifyDataSetChanged()
+        CoroutineScope(Dispatchers.Main).launch {
+            val reminders = withContext(Dispatchers.IO) {
+                reminderRepository.getAllReminders()
+            }
+            this@ReminderActivity.reminders.clear()
+            this@ReminderActivity.reminders.addAll(reminders)
+            reminderAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun startAddActivity() {
@@ -63,8 +71,12 @@ class ReminderActivity : AppCompatActivity() {
                 ADD_REMINDER_REQUEST_CODE -> {
                     val reminder = data?.getParcelableExtra<Reminder>(EXTRA_REMINDER)
                     reminder?.let {
-                        reminderRepository.insertReminder(reminder)
-                        getRemindersFromDB()
+                        CoroutineScope(Dispatchers.Main).launch {
+                            withContext(Dispatchers.IO) {
+                                reminderRepository.insertReminder(reminder)
+                            }
+                            getRemindersFromDB()
+                        }
                     } ?: run {
                         Log.e("addReminder","Something went wrong while adding reminder")
                     }
@@ -95,7 +107,13 @@ class ReminderActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val reminderToDelete = reminders[position]
-                reminderRepository.deleteReminder(reminderToDelete)
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    withContext(Dispatchers.IO) {
+                        reminderRepository.deleteReminder(reminderToDelete)
+                    }
+                }
+
                 getRemindersFromDB()
             }
 
