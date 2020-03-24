@@ -28,6 +28,7 @@ class AddReminderActivity : AppCompatActivity() {
 
         fab.setOnClickListener { onSaveClick() }
     }
+
     /**
      * Add reminder if reminder isn't empty
      */
@@ -40,7 +41,7 @@ class AddReminderActivity : AppCompatActivity() {
             resultIntent.putExtra(EXTRA_REMINDER, reminder)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
-            } else Toast.makeText(this, "Reminder cannot be empty.", Toast.LENGTH_SHORT).show()
+        } else Toast.makeText(this, "Reminder cannot be empty.", Toast.LENGTH_SHORT).show()
 
     }
 

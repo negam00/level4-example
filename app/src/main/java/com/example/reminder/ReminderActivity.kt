@@ -78,7 +78,7 @@ class ReminderActivity : AppCompatActivity() {
                             getRemindersFromDB()
                         }
                     } ?: run {
-                        Log.e("addReminder","Something went wrong while adding reminder")
+                        Log.e("addReminder", "Something went wrong while adding reminder")
                     }
                 }
             }

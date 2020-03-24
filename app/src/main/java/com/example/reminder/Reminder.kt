@@ -15,4 +15,4 @@ data class Reminder(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Long? = null
-): Parcelable
+) : Parcelable

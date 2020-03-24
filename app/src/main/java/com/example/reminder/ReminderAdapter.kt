@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_reminder.view.*
 
-class ReminderAdapter(private val reminders: List<Reminder>) : RecyclerView.Adapter<ReminderAdapter.ViewHolder>() {
+class ReminderAdapter(private val reminders: List<Reminder>) :
+    RecyclerView.Adapter<ReminderAdapter.ViewHolder>() {
 
     /**
      * Creates and returns a ViewHolder object, inflating the layout called item_reminder.
